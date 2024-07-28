@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {},
+    fontFamily: {
+      playwrite: ["Playwrite AU VIC", "cursive"]
+    }
   },
   plugins: [],
 }
