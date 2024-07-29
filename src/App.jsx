@@ -10,7 +10,9 @@ import SearchForm from "./pages/SearchForm";
 export default function App() {
   const [pets, setPets] = useState([]);
   useEffect(()=>{
-    axios.get('http://pets-v2.dev-apis.com/pets').then(e=>setPets(e.data.pets));
+    if(pets.length === 0){
+      axios.get('http://pets-v2.dev-apis.com/pets').then(e=>setPets(e.data.pets));
+    }
   }, []);
 
   // console.log(pets);
@@ -22,7 +24,7 @@ export default function App() {
           <Route index element={<HomePage pets={pets}/>}/>
           <Route path="/home" element={<HomePage pets={pets}/>}/>
           <Route path="/petdetail" element={<PetDetails/>}/>
-          <Route path="/searchform" element={<SearchForm/>}/>
+          <Route path="/searchform" element={<SearchForm pets={pets}/>}/>
           <Route path='*' element={<h1 className="text-5xl absolute top-[48%] left-1/2 -translate-x-2/4 hover:bg-black hover:text-white p-2 rounded-lg"><Link to="/home">404 No such page found!!!!<p className="text-xs">Click to go to homepage</p></Link></h1>}/>
         </Routes>
       </BrowserRouter>
