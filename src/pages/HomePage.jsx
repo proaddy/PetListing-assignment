@@ -1,15 +1,13 @@
-import { useState, useEffect } from "react";
+import { Suspense, useState, lazy } from "react";
+import { useLocation } from "react-router-dom";
 import Petlist from "../components/PetList"
 import NavigationBar from "../components/NavigationBar";
-import { useLocation } from "react-router-dom";
-import axios from 'axios';
 
 export default function HomePage({pets}) {
     const [type, setType] = useState('All');
     let pet = [...pets];
 
     const animalList = pets.reduce((a, e)=>{if(!a.includes(e.animal)){a.push(e.animal)};return a}, ["All"]);
-    // console.log(animalList, "animals")
 
     const locate = useLocation();
     if(locate.state) {
@@ -24,28 +22,33 @@ export default function HomePage({pets}) {
     }
 
     return (
-        <div className="flex flex-col">
-        {/* ---------- navbar ---------- */}
-            <NavigationBar/>
+        <Suspense fallback={<Loading/>}>
+            <div className="flex flex-col">
+                <NavigationBar/>
 
-        {/* ----------- Filters ----------- */}
-            <div id="filters" className="p-4">
-                Animal Filter |  <select name="animals" onChange={e=>setType(e.target.value)} className="p-1 mx-1">
-                    {
-                        animalList.map((e, i) => {
-                            return (
-                                <option key={i} value={e}>{e}</option>
-                            )
-                        })
-                    }
-                </select>
-            </div>
-            <hr className="border border-gray-200 w-[96%] self-center"/>
+                <div className="p-4">
+                    Animal Filter |  <select name="animalList" onChange={e=>setType(e.target.value)} className="p-1 mx-1">
+                        {
+                            animalList.map((e, i) => {
+                                return (
+                                    <option key={i} value={e}>{e}</option>
+                                )
+                            })
+                        }
+                    </select>
+                </div>
+                <hr className="border border-gray-200 w-[96%] self-center"/>
 
-        {/* ----------- Main Content ------------ */}
-            <div className="p-4">
-                <Petlist petsInfo={type === 'All' ? pet : pet.filter((e)=> {return e.animal === type})}/>
+                <div className="p-4">
+                    <Petlist petsInfo={type === 'All' ? pet : pet.filter((e)=> {return e.animal === type})}/>
+                </div>
             </div>
-        </div>
+        </Suspense>
+    )
+}
+
+function Loading() {
+    return (
+        <h1>💫 loading....</h1>
     )
 }

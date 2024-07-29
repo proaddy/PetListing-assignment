@@ -29,7 +29,7 @@ export default function searchForm({pets}){
     return (
         <div className="flex flex-col">
             <NavigationBar/>
-            <form onSubmit={transferToHome} className="text-xl p-10 self-center flex flex-col">
+            <form onSubmit={transferToHome} className="text-xl md:p-10 self-center flex flex-col">
                 <h1 className="text-2xl my-10">Enter details to search</h1>
                 {/* location */}
                 <label htmlFor="location">Choose Location:</label>
